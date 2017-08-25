@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+var fs = require('fs');
 var request = require('request');
 var cheerio = require('cheerio');
 
@@ -14,7 +15,7 @@ var headers = {
 }
 app.get('/', function(req, res){
     res.header("Access-Control-Allow-Origin", "*")
-
+    // res.setDefaultEncoding('binary')
     var options = {
         url: 'http://www.58pic.com/',
         header: headers
@@ -24,20 +25,30 @@ app.get('/', function(req, res){
         $ = cheerio.load(body);//当前的$,它是拿到了整个body的前端选择器
         var img = $('img')
         var svg = []
-        // for(let key in img) {
-        //     // console.log(img[key].attribs)
-        //     if (img[key].attribs !== undefined) {
-        //        if (img[key].attribs.src !== undefined) {
-        //            svg.push(img[key].attribs)
-        //        }
-        //     }
-        // }
         for (let i = 0; i < 100; i++) {
             if (img[i] !== undefined) {
                 svg.push(img[i].attribs.src)
+                // console.log(img[i].attribs.src)
             }
         }
-        console.log(svg)
+        var downloadPic = function(src, dest){
+            request(src).pipe(fs.createWriteStream(dest)).on('close',function(){
+                console.log('pic saved!')
+            })
+        }
+        // downloadPic(svg[3],'../images/1.jpg')
+        for (let i = 0; i < svg.length; i++) {
+            // console.log(svg[i].substring(0,5))
+            if (svg[i] === '' || String(svg[i].substring(0,4)) === 'data') {
+                console.log(String(svg[i].substring(0,4)))
+                // return false
+            } else {
+                downloadPic(svg[i],'../images/' + i + '.jpg')
+            }
+            // console.log(svg[i])
+            // downloadPic(svg[i],'../images/' + i + '.jpg')
+        }
+        // console.log(svg)
         svg = JSON.stringify(svg)
         res.format({
                     'application/json': function(){
