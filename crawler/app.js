@@ -9,7 +9,7 @@ var cheerio = require('cheerio');
 var headers = {
     "Accept": "*/*",
     "Accept-Encoding": "gzip, deflate",
-    "Accept-Language": "zh-CN,zh;q=0.8"
+    // "Accept-Language": "zh-CN,zh;q=0.8"
     // "Content-Type": "application/x-www-form-urlencoded",
     // "Cookie": cookie
 }
@@ -17,45 +17,49 @@ app.get('/', function(req, res){
     res.header("Access-Control-Allow-Origin", "*")
     // res.setDefaultEncoding('binary')
     var options = {
-        url: 'http://www.58pic.com/',
+        url: 'https://octodex.github.com/',
         header: headers
     }
     request(options, function (error, response, body) {
       if (!error && response.statusCode == 200) {
         $ = cheerio.load(body);//当前的$,它是拿到了整个body的前端选择器
-        var img = $('img')
+        var img = $('.masonry-brick')
+        console.log($(body));
+        /**
+         * @array svg出入图片路径的数组
+         */ 
         var svg = []
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < img.length; i++) {
             if (img[i] !== undefined) {
-                svg.push(img[i].attribs.src)
-                // console.log(img[i].attribs.src)
+                svg.push(img[i].children)
             }
         }
-        var downloadPic = function(src, dest){
-            request(src).pipe(fs.createWriteStream(dest)).on('close',function(){
-                console.log('pic saved!')
-            })
-        }
+        console.log(svg)
+        // var downloadPic = function(src, dest){
+        //     request(src).pipe(fs.createWriteStream(dest)).on('close',function(){
+        //         console.log('pic saved!')
+        //     })
+        // }
         // downloadPic(svg[3],'../images/1.jpg')
-        for (let i = 0; i < svg.length; i++) {
-            // console.log(svg[i].substring(0,5))
-            if (svg[i] === '' || String(svg[i].substring(0,4)) === 'data') {
-                console.log(String(svg[i].substring(0,4)))
-                // return false
-            } else {
-                downloadPic(svg[i],'../images/' + i + '.jpg')
-            }
+        // for (let i = 0; i < svg.length; i++) {
+        //     console.log(svg[i].substring(0,5))
+        //     if (svg[i] === '' || String(svg[i].substring(0,4)) === 'data') {
+        //         console.log(String(svg[i].substring(0,4)))
+        //         return false
+        //     } else {
+        //         downloadPic(svg[i],'../images/' + i + '.jpg')
+        //     }
             // console.log(svg[i])
-            // downloadPic(svg[i],'../images/' + i + '.jpg')
-        }
-        // console.log(svg)
+        //     downloadPic(svg[i],'../images/' + i + '.jpg')
+        // }
+        // // console.log(svg)
         svg = JSON.stringify(svg)
         res.format({
                     'application/json': function(){
                         res.send({ message: svg });
                     },
                 })
-    //   console.log(response); //我博客的获取用户名
+         //我博客的获取用户名
       }else{
          console.log("思密达，没爬取到用户名，再来一次");
       }
