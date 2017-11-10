@@ -30,7 +30,7 @@ router.get('/read', function(req, res, next) {
 
 // 存储数据
 
-router.get('/write', function(req, res, next) {
+router.post('/write', function(req, res, next) {
   var Type = req.query.type || '';
   var Name = req.query.name || '';
   var Img = req.query.img || '';
