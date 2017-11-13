@@ -1,9 +1,9 @@
-var router = require('koa-router')();
+const Router = require('koa-router')
+const router = new Router()
+const user = require('../controller/user')
 
-module.exports = function(){
-    router.get({
-        prifix: {
-            
-        }
-    })
-}
+router.get('/user/login', user.login)
+router.get('/user/profile/:name', user.profile)
+router.post('/signin', user.signin)
+
+module.exports = router
