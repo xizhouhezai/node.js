@@ -7,7 +7,7 @@ var path = require('path');
 
 var app = new Koa();
 
-var { upLoads } = require('./util/upload');
+var { uploads } = require('./util/upload');
 
 app.use(bodyParser());
 
@@ -34,7 +34,7 @@ router.post('/upload.json',async (ctx, next) => {
 
     // 上传文件的方法
 
-    result = await upLoads(ctx, {
+    result = await uploads(ctx, {
         fileType: 'album',
         path: serverFilePath
     })
