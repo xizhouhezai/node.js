@@ -17,24 +17,24 @@ app.get('/', function(req, res){
     res.header("Access-Control-Allow-Origin", "*")
     // res.setDefaultEncoding('binary')
     var options = {
-        url: 'https://octodex.github.com/',
+        url: 'http://zhongzhiacc.com/guide/index.html',
         header: headers
     }
     request(options, function (error, response, body) {
       if (!error && response.statusCode == 200) {
         $ = cheerio.load(body);//当前的$,它是拿到了整个body的前端选择器
-        var img = $('.masonry-brick')
-        console.log($(body));
+        var img = $('.blogContent')
+        // console.log("这里是body：" + body)
+        // console.log($(body));
         /**
          * @array svg出入图片路径的数组
          */ 
         var svg = []
-        for (let i = 0; i < img.length; i++) {
-            if (img[i] !== undefined) {
-                svg.push(img[i].children)
-            }
+        svg.push(img[0].children)
+        for (let i = 0; i < img[0].children.length; i++) {
+            svg.push(img[0].children[i])
         }
-        console.log(svg)
+        // console.log(svg)
         // var downloadPic = function(src, dest){
         //     request(src).pipe(fs.createWriteStream(dest)).on('close',function(){
         //         console.log('pic saved!')
@@ -52,7 +52,7 @@ app.get('/', function(req, res){
             // console.log(svg[i])
         //     downloadPic(svg[i],'../images/' + i + '.jpg')
         // }
-        // // console.log(svg)
+        console.log(svg)
         svg = JSON.stringify(svg)
         res.format({
                     'application/json': function(){
@@ -65,7 +65,7 @@ app.get('/', function(req, res){
       }
 })
 });
-var server = app.listen(3000, function(){
+var server = app.listen(3333, function(){
                 var host = server.address().address
                 var port = server.address().port
                 console.log(server.address())
