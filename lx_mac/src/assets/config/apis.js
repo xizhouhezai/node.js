@@ -1,0 +1,17 @@
+export default {
+  'category.index': 'categories',
+  'major-subject': 'major-subjects',
+  'check.index': 'check',
+  'reg.index': 'reg',
+  'auth.index': 'auth',
+  'regSms.index': 'tool/sms-sender',
+  'user-contract.index': 'users/:id/ongoing-contract',
+  'update-contract': 'user-contracts/:id/subjects',
+  'create-contract': 'users/:id/enrollment',
+  'contract-preview': 'user-contracts/:id',
+  'contract-sign.index': 'user-contracts/:id/signment',
+  'contract-pay': 'user-contracts/:id/payment',
+  'course-majors': 'users/:id/course-majors?expand=subjects',
+  'auth2': 'getOpenidFromAuth2',
+  'pay-submit': 'pay/submit',
+};

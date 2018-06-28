@@ -1,0 +1,17 @@
+.temp
+.gradle
+.idea
+dist
+build
+
+local.properties
+
+# nodejs modules directory
+node_modules
+
+# test report
+/test/unit/coverage
+
+# sublime project files
+*.sublime-project
+*.sublime-workspace
