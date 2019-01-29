@@ -2,19 +2,16 @@ const http = require('http')
 
 class Application {
   constructor() {
-    this.callbackFunc
+    this.callbackFunc = () => {}
   }
   listen(...args) {
-    let server = http.createServer(this.callback())
+    let server = http.createServer((req, res) => {
+      this.callbackFunc(req, res)
+    })
     server.listen(...args)
   }
-  use(fn) {
-    this.callbackFunc = fn
-  }
-  callback() {
-    return (req, res) => {
-      this.callbackFunc(req, res);
-    }
+  use(callback) {
+    this.callbackFunc = callback
   }
 }
 
